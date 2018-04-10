@@ -34,12 +34,15 @@ static void tocha_tensor_init_f64_3(tocha_tensor_s* t, int d1, int d2, int d3, d
 static void tocha_tensor_init_f64_4(tocha_tensor_s* t, int d1, int d2, int d3, int d4,
 				    double* data);
 static void tocha_tensor_free(tocha_tensor_s* t);
+static void tocha_tensor_print(const tocha_tensor_s* t);
+
 
 static void tocha_tensors_init(tocha_tensors_s* list);
 static void tocha_tensors_add(tocha_tensors_s* list, tocha_tensor_s* t);
 static void tocha_tensors_save(const tocha_tensors_s* list, const char* path);
 static void tocha_tensors_load(tocha_tensors_s* list, const char* path);
 static void tocha_tensors_free(tocha_tensors_s* list);
+static void tocha_tensors_print(const tocha_tensors_s* list);
 
 
 static inline void tocha_tensor_init_f64_0(tocha_tensor_s* t, double* data)
@@ -129,6 +132,40 @@ static inline void tocha_tensor_free(tocha_tensor_s* t)
     free(t->dims);
 }
 
+static inline void tocha_tensor_print(const tocha_tensor_s* t)
+{
+    const char* types = "fi";
+    
+    printf("%c%d(", types[t->type], (int) t->size * 8);
+
+    for (size_t i = 0; i < t->ndims; ++i)
+    {
+	printf("%d", t->dims[i]);
+	if (i + 1 != t->ndims)
+	    printf("*");
+    }
+
+    printf(") {");
+
+    double* data = t->data;
+    for (size_t i = 0; i < t->total_len; ++i)
+    {
+	printf("%G", data[i]);
+	
+	if (i + 1 != t->total_len)
+	{
+	    printf(", ");
+	    if (i > 15 && i + 2 != t->total_len)
+	    {
+		printf("..., ");
+		i = t->total_len - 2;
+	    }
+	}
+    }
+    
+    printf("}\n");
+}
+
 
 static inline void tocha_tensors_init(tocha_tensors_s* list)
 {
@@ -210,5 +247,15 @@ static inline void tocha_tensors_free(tocha_tensors_s* list)
 	tocha_tensor_free(list->list + i);
     free(list->list);
 }
+
+static inline void tocha_tensors_print(const tocha_tensors_s* list)
+{
+    for (size_t i = 0; i < list->size; ++i)
+    {
+	tocha_tensor_print(list->list + i);
+	printf("\n");
+    }
+}
+
 
 #endif
