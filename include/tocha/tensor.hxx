@@ -1,7 +1,7 @@
 #include "tensor.hh"
 #include <algorithm>
 #include <stdexcept>
-#include "cnpy.h"
+#include "../../ext/cnpy/cnpy.h"
 
 #pragma once
 
