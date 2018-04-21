@@ -29,6 +29,12 @@ namespace tocha
 	static Tensor f64(int d1, int d2, int d3, double* data = nullptr);
 	static Tensor f64(int d1, int d2, int d3, int d4, double* data = nullptr);
 
+	static Tensor f32(float* data = nullptr);
+	static Tensor f32(int d1, float* data = nullptr);
+	static Tensor f32(int d1, int d2, float* data = nullptr);
+	static Tensor f32(int d1, int d2, int d3, float* data = nullptr);
+	static Tensor f32(int d1, int d2, int d3, int d4, float* data = nullptr);
+
 
 	void dump(std::ostream& os) const;
 	void dump_type(std::ostream& os) const;

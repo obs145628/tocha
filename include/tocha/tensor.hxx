@@ -96,6 +96,79 @@ namespace tocha
 	return t;
     }
 
+    inline Tensor Tensor::f32(float* data)
+    {
+	if (data == nullptr)
+	    data = new float[1];
+
+	Tensor t;
+	t.type = TENSOR_FLOAT;
+	t.size = 4;
+	t.total_len = 1;
+	t.data = reinterpret_cast<uint8_t*>(data);
+	return t;
+    }
+
+    inline Tensor Tensor::f32(int d1, float* data)
+    {
+	size_t len = d1;
+	if (data == nullptr)
+	    data = new float[len];
+
+	Tensor t;
+	t.type = TENSOR_FLOAT;
+	t.size = 4;
+	t.dims = {d1};
+	t.total_len = len;
+	t.data = reinterpret_cast<uint8_t*>(data);
+	return t;
+    }
+
+    inline Tensor Tensor::f32(int d1, int d2, float* data)
+    {
+	size_t len = d1 * d2;
+	if (data == nullptr)
+	    data = new float[len];
+
+	Tensor t;
+	t.type = TENSOR_FLOAT;
+	t.size = 4;
+	t.dims = {d1, d2};
+	t.total_len = len;
+	t.data = reinterpret_cast<uint8_t*>(data);
+	return t;
+    }
+
+    inline Tensor Tensor::f32(int d1, int d2, int d3, float* data)
+    {
+	size_t len = d1 * d2 * d3;
+	if (data == nullptr)
+	    data = new float[len];
+
+	Tensor t;
+	t.type = TENSOR_FLOAT;
+	t.size = 4;
+	t.dims = {d1, d2, d3};
+	t.total_len = len;
+	t.data = reinterpret_cast<uint8_t*>(data);
+	return t;
+    }
+
+    inline Tensor Tensor::f32(int d1, int d2, int d3, int d4, float* data)
+    {
+	size_t len = d1 * d2 * d3 * d4;
+	if (data == nullptr)
+	    data = new float[len];
+
+	Tensor t;
+	t.type = TENSOR_FLOAT;
+	t.size = 4;
+	t.dims = {d1, d2, d3, d4};
+	t.total_len = len;
+	t.data = reinterpret_cast<uint8_t*>(data);
+	return t;
+    }
+
 
     template <class T>
     void print_vec(std::ostream& os, const uint8_t* begin, std::size_t len)
