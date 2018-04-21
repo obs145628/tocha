@@ -121,18 +121,9 @@ namespace tocha
 
     inline void Tensor::dump(std::ostream& os) const
     {
-	const char* types = "fi";
-
-	os << types[type] << int(size * 8) << "(";
-
-	for (size_t i = 0; i < dims.size(); ++i)
-	{
-	    os << dims[i];
-	    if (i + 1 != dims.size())
-		os << "*";
-	}
-
-	os << ") ";
+	dump_type(os);
+	dump_dims(os);
+	os << " ";
 
 	if (type == 1 && size == 4)
 	    print_vec<std::int32_t>(os, data, total_len);
@@ -146,6 +137,67 @@ namespace tocha
 	    os << "???";
 	os << std::endl;
     }
+
+    inline void Tensor::dump_type(std::ostream& os) const
+    {
+	const char* types = "fi";
+	os << types[type] << int(size * 8);
+    }
+    
+    inline void Tensor::dump_dims(std::ostream& os) const
+    {
+	os << "(";
+	for (size_t i = 0; i < dims.size(); ++i)
+	{
+	    os << dims[i];
+	    if (i + 1 != dims.size())
+		os << "*";
+	}
+	os << ")";
+    }
+
+    inline bool Tensor::same_type(const Tensor& t) const
+    {
+	return type == t.type && size == t.size; 
+    }
+    
+    inline bool Tensor::same_dims(const Tensor& t) const
+    {
+	return dims == t.dims;
+    }
+
+    template <class T>
+    double vec_distance(const uint8_t* data1, const uint8_t* data2, size_t len)
+    {
+	auto beg1 = reinterpret_cast<const T*>(data1);
+	auto end1 = beg1 + len;
+	auto beg2 = reinterpret_cast<const T*>(data2);
+	double res = 0;
+
+	while (beg1 != end1)
+	{
+	    res += (*beg2 - *beg1) * (*beg2 - *beg1);
+	    ++beg1;
+	    ++beg2;
+	}
+
+	return res;
+    }
+    
+    inline double Tensor::distance(const Tensor& t) const
+    {
+	if (type == 1 && size == 4)
+	    return vec_distance<std::int32_t>(data, t.data, total_len);
+	else if (type == 1 && size == 8)
+	    return vec_distance<std::int64_t>(data, t.data, total_len);
+	else if (type == 0 && size == 4)
+	    return vec_distance<float>(data, t.data, total_len);
+	else if (type == 0 && size == 8)
+	    return vec_distance<double>(data, t.data, total_len);
+	else
+	    return 1234;
+    }
+	    
 
     std::string path_extract_ext(const std::string& path)
     {
@@ -281,5 +333,10 @@ namespace tocha
 	}
 
 	fclose(f);
+    }
+
+    inline const std::vector<Tensor>& Tensors::arr() const
+    {
+	return arr_;
     }
 }

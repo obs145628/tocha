@@ -31,6 +31,11 @@ namespace tocha
 
 
 	void dump(std::ostream& os) const;
+	void dump_type(std::ostream& os) const;
+	void dump_dims(std::ostream& os) const;
+	bool same_type(const Tensor& t) const;
+	bool same_dims(const Tensor& t) const;
+	double distance(const Tensor& t) const;
 	
 	int type;
 	size_t size;
@@ -59,6 +64,8 @@ namespace tocha
 	void save(const std::string& path) const;
 	void save_npz(const std::string& path) const;
 	void save_tbin(const std::string& path) const;
+
+	const std::vector<Tensor>& arr() const;
 
     private:
 	std::vector<Tensor> arr_;

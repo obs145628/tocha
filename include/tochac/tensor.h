@@ -169,14 +169,14 @@ static inline void tocha_tensor_print(const tocha_tensor_s* t)
 
 static inline void tocha_tensors_init(tocha_tensors_s* list)
 {
-    list->list = malloc(10 * sizeof(tocha_tensor_s));
+    list->list = malloc(100 * sizeof(tocha_tensor_s));
     list->size = 0;
 }
 
 static inline void tocha_tensors_add(tocha_tensors_s* list, tocha_tensor_s* t)
 {
-    if (list->size && list->size % 10 == 0)
-	list->list = realloc(list->list, (list->size + 10) * sizeof(tocha_tensor_s));
+    if (list->size && list->size % 100 == 0)
+	list->list = realloc(list->list, (list->size + 100) * sizeof(tocha_tensor_s));
     memcpy(&list->list[list->size], t, sizeof(tocha_tensor_s));
     ++list->size;
 }
@@ -226,6 +226,7 @@ static inline void tocha_tensors_load(tocha_tensors_s* list, const char* path)
 	tensor.type = type;
 	tensor.size = size;
 	tensor.ndims = ndims;
+        
 	tensor.dims = malloc(tensor.ndims * sizeof(int));
 	fread(tensor.dims, sizeof(int), tensor.ndims, f);
 
