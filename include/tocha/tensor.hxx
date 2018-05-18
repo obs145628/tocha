@@ -1,7 +1,7 @@
 #include "tensor.hh"
 #include <algorithm>
 #include <stdexcept>
-#include "../../ext/cnpy/cnpy.h"
+#include "../../ext/cnpy/cnpy.hh"
 
 #pragma once
 
@@ -272,7 +272,7 @@ namespace tocha
     }
 	    
 
-    std::string path_extract_ext(const std::string& path)
+    inline std::string path_extract_ext(const std::string& path)
     {
 	std::string::size_type pos = path.rfind('.');
 	if (pos == std::string::npos)
