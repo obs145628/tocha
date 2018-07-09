@@ -325,7 +325,7 @@ namespace tocha
 
 	Tensors res;
 	std::uint16_t ntensors;
-	fread(&ntensors, sizeof(std::uint16_t), 1, f);
+	(void) fread(&ntensors, sizeof(std::uint16_t), 1, f);
 
 	for (std::uint16_t i = 0; i < ntensors; ++i)
 	{
@@ -333,20 +333,20 @@ namespace tocha
 	    std::uint8_t type;
 	    std::uint8_t size;
 	    std::uint8_t ndims;	
-	    fread(&type, sizeof(std::uint8_t), 1, f);
-	    fread(&size, sizeof(std::uint8_t), 1, f);
-	    fread(&ndims, sizeof(std::uint8_t), 1, f);
+	    (void) fread(&type, sizeof(std::uint8_t), 1, f);
+	    (void) fread(&size, sizeof(std::uint8_t), 1, f);
+	    (void) fread(&ndims, sizeof(std::uint8_t), 1, f);
 	    t.type = type;
 	    t.size = size;
 	    t.dims = std::vector<int>(ndims);
-	    fread(&t.dims[0], sizeof(int), ndims, f);
+	    (void) fread(&t.dims[0], sizeof(int), ndims, f);
 
 	    t.total_len = 1;
 	    for (std::uint8_t i = 0; i < ndims; ++i)
 		t.total_len *= t.dims[i];
 
 	    t.data = new std::uint8_t[t.total_len * t.size];
-	    fread(&t.data[0], t.size, t.total_len, f);
+	    (void) fread(&t.data[0], t.size, t.total_len, f);
 	    res.add(std::move(t));
 	}
 
