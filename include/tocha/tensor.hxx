@@ -1,4 +1,4 @@
-r #pragma GCC diagnostic ignored "-Wunused-result"
+#pragma GCC diagnostic ignored "-Wunused-result"
 
 #include "tensor.hh"
 #include <algorithm>
